@@ -69,93 +69,85 @@
 </template>
 
 <script>
-  const API_URL = "http://localhost:6001/api";
+const API_URL = "http://localhost:6001/api";
 
-  export default {
-    data() {
-      return {
-        results: [],
-        result: null,
-        error: null,
-        errormsg: null,
-        dialog: false,
-        title: "",
-        description: "",
-        arduino_key: "",
-        newSensor: null,
-        alert: false,
-        alertmsg: "",
+export default {
+  data() {
+    return {
+      results: [],
+      result: null,
+      error: null,
+      errormsg: null,
+      dialog: false,
+      title: "",
+      description: "",
+      arduino_key: "",
+      newSensor: null,
+      alert: false,
+      alertmsg: "",
 
-        // form validation
-        valid: false,
-        titleRules: [
-          v => !!v || 'Title is required!',
-        ],
-        descRules: [
-          v => !!v || 'Description is required!',
-        ],
-        keyRules: [
-          v => !!v || 'Arduino key is required!',
-        ]
-      };
-    },
-    mounted() {
-      this.getSensors();
-    },
-    methods: {
-
-      submitNewSensor: function () {
-        if (!this.valid) { return }
-        this.newSensor = {
-          title: this.title,
-          description: this.description,
-          arduino_key: this.arduino_key
-        };
-        axios
-          .post(`${API_URL}/sensors`, this.newSensor)
-          .then(response => {
-            this.results.push(this.newSensor);
-            this.alertmsg = "A new sensor registered"
-            this.alert = true
-            return (this.result = response);
-          })
-          .catch(error => {
-            this.alertmsg = "Unable to save!"
-            return (this.error = true);
-          });
-      },
-
-      deleteSensor: function (key, index) {
-        axios
-          .delete(`${API_URL}/sensors/` + key.arduino_key)
-          .then(response => {
-            this.results.splice(index, 1);
-            this.alertmsg = "Sensor deleted!"
-            this.alert = true
-            return (this.error = false)
-          })
-          .catch(error => {
-            this.errormsg = error.response.data
-            return (this.error = true);
-          });
-      },
-
-      getSensors: function () {
-        axios
-          .get(`${API_URL}/sensors`)
-          .then(response => {
-            return (this.results = response.data);
-          })
-          .catch(error => {
-            return (this.error = true);
-          });
+      // form validation
+      valid: false,
+      titleRules: [v => !!v || "Title is required!"],
+      descRules: [v => !!v || "Description is required!"],
+      keyRules: [v => !!v || "Arduino key is required!"]
+    };
+  },
+  mounted() {
+    this.getSensors();
+  },
+  methods: {
+    submitNewSensor: function() {
+      if (!this.valid) {
+        return;
       }
-    }
-  };
+      this.newSensor = {
+        title: this.title,
+        description: this.description,
+        arduino_key: this.arduino_key
+      };
+      axios
+        .post(`${API_URL}/sensors`, this.newSensor)
+        .then(response => {
+          this.results.push(this.newSensor);
+          this.alertmsg = "A new sensor registered";
+          this.alert = true;
+          return (this.result = response);
+        })
+        .catch(error => {
+          this.alertmsg = "Unable to save!";
+          return (this.error = true);
+        });
+    },
 
+    deleteSensor: function(key, index) {
+      axios
+        .delete(`${API_URL}/sensors/` + key.arduino_key)
+        .then(response => {
+          this.results.splice(index, 1);
+          this.alertmsg = "Sensor deleted!";
+          this.alert = true;
+          return (this.error = false);
+        })
+        .catch(error => {
+          this.errormsg = error.response.data;
+          return (this.error = true);
+        });
+    },
+
+    getSensors: function() {
+      axios
+        .get(`${API_URL}/sensors`)
+        .then(response => {
+          return (this.results = response.data);
+        })
+        .catch(error => {
+          return (this.error = true);
+        });
+    }
+  }
+};
 </script>
 
 <style>
-
-
 </style>
