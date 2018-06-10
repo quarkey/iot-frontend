@@ -33,8 +33,17 @@
           <v-card-title primary-title>
             <div class="headline text-sm-left">Data:</div>
           </v-card-title>
+
+          <v-layout>
+            <v-flex sm12>
+            <span v-for="sensor in sensordata" :key="sensor.id">
+              <div class="text-sm-left"> {{sensor.id}} {{sensor.data}} {{sensor.time}}</div>
+            </span>
+            </v-flex>
+          </v-layout>
+          <!-- work on this later. it dosnt work...
           <datatable v-bind:data="{data: sensordata, fields: result.fields}">
-          </datatable>
+          </datatable> -->
         </v-card>
       </v-flex>
     </v-layout>

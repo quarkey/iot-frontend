@@ -1,19 +1,21 @@
 <template>
     <div>
-        {{data.fields}} 
+        {{data.data}} 
+        <v-btn @click="gen()">generate
+        </v-btn>
+        <br>
+        headers: {{hdr}}<br>
+        tmp: {{tmp}}<br>
+        datasensor: {{sensordata}}
 <v-data-table
-    :headers="headers"
-    :items="desserts"
+    :headers="hdr"
+    :items="sensordata"
     hide-actions
     class="elevation-1"
   >
     <template slot="items" slot-scope="props">
       <td>{{ props.item.name }}</td>
-      <td class="text-xs-right">{{ props.item.calories }}</td>
-      <td class="text-xs-right">{{ props.item.fat }}</td>
-      <td class="text-xs-right">{{ props.item.carbs }}</td>
-      <td class="text-xs-right">{{ props.item.protein }}</td>
-      <td class="text-xs-right">{{ props.item.iron }}</td>
+      <td class="text-xs-right">{{ props.item.value }}</td>
     </template>
   </v-data-table>
     </div>
@@ -22,10 +24,32 @@
 <script>
 export default {
   props: ["data"],
+  methods: {
+    gen: function() {
+      this.hdr = [];
+      this.sensordata = [];
+      var a;
+      var b = {};
+      this.data.fields.forEach(field => {
+        a = { text: field, value: field };
+        this.hdr.push(a);
+      });
+      this.data.data.forEach(val => {
+        console.log(val.id + val.time);
+        const ob = {};
+        val.data.forEach((last, i) => {
+          console.log(val.id + " " + val.time + " " + last);
+          var tmp = this.hdr[i]
+          var field = tmp.text 
+        });
+      });
+    }
+  },
   data() {
     return {
       hdr: [],
       sensordata: [],
+      tmp: [],
       headers: [
         {
           text: "Dessert (100g serving)",
@@ -41,9 +65,9 @@ export default {
       ],
       desserts: [
         {
-          value: false,
-          name: "Frozen Yogurt",
-          calories: 159,
+          cc: false,
+          aa: "Frozen Yogurt",
+          xx: 159,
           fat: 6.0,
           carbs: 24,
           protein: 4.0,
